@@ -1,14 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, type Variants } from 'framer-motion'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, ArrowRight, Check, MessageCircle, ShieldCheck, X } from 'lucide-react'
-import { useQuote } from '../../context/QuoteContext'
-import { useMultiStepForm, type StepDefinition } from '../../hooks/useMultiStepForm'
+import { useMultiStepForm, type StepDefinition } from '../../lib/useMultiStepForm'
 import { quoteSchema, STEP_FIELDS } from '../../lib/quote'
 import { buildQuoteMessage, buildWhatsAppUrl, sendQuoteToApi } from '../../lib/whatsapp'
 import { QUOTE_API_ENDPOINT } from '../../config'
 import { packages } from '../../data/packages'
+import { getBasket } from '../../lib/basket'
 import type { QuoteFormData } from '../../types'
 import { StepContact } from './StepContact'
 import { StepEvent } from './StepEvent'
@@ -24,16 +23,24 @@ const STEPS: StepDefinition[] = [
 
 const DEFAULT_PACKAGE_ID = packages.find((pkg) => pkg.recommended)?.id ?? packages[0].id
 
-const stepVariants: Variants = {
-  enter: (direction: number) => ({ x: direction > 0 ? 48 : -48, opacity: 0 }),
-  center: { x: 0, opacity: 1 },
-  exit: (direction: number) => ({ x: direction > 0 ? -48 : 48, opacity: 0 }),
-}
-
 type ApiStatus = 'idle' | 'sending' | 'sent' | 'error'
 
+function buildDefaultValues(): QuoteFormData {
+  const basket = getBasket()
+  return {
+    nombre: '',
+    whatsapp: '',
+    email: '',
+    eventType: '',
+    date: '',
+    location: '',
+    packageId: basket.packageId ?? DEFAULT_PACKAGE_ID,
+    addons: [...basket.addons],
+  }
+}
+
 export function QuoteWizard() {
-  const { closeQuote, presetPackageId, presetAddons } = useQuote()
+  const [isOpen, setIsOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [waUrl, setWaUrl] = useState('')
   const [apiStatus, setApiStatus] = useState<ApiStatus>('idle')
@@ -42,21 +49,26 @@ export function QuoteWizard() {
   const form = useForm<QuoteFormData>({
     resolver: zodResolver(quoteSchema),
     mode: 'onTouched',
-    defaultValues: {
-      nombre: '',
-      whatsapp: '',
-      email: '',
-      eventType: '',
-      date: '',
-      location: '',
-      packageId: presetPackageId ?? DEFAULT_PACKAGE_ID,
-      addons: presetAddons,
-    },
+    defaultValues: buildDefaultValues(),
   })
 
   const stepper = useMultiStepForm(STEPS)
 
+  const closeQuote = useCallback(() => setIsOpen(false), [])
+
   useEffect(() => {
+    const onOpen = () => {
+      form.reset(buildDefaultValues())
+      setSubmitted(false)
+      setApiStatus('idle')
+      setIsOpen(true)
+    }
+    window.addEventListener('spa:open-quote', onOpen)
+    return () => window.removeEventListener('spa:open-quote', onOpen)
+  }, [form])
+
+  useEffect(() => {
+    if (!isOpen) return
     panelRef.current?.focus()
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') closeQuote()
@@ -67,7 +79,7 @@ export function QuoteWizard() {
       document.removeEventListener('keydown', onKeyDown)
       document.body.style.overflow = ''
     }
-  }, [closeQuote])
+  }, [isOpen, closeQuote])
 
   const handleNext = async () => {
     const fields = STEP_FIELDS[stepper.currentStep]
@@ -102,43 +114,29 @@ export function QuoteWizard() {
     }
   }
 
+  if (!isOpen) return null
+
   return (
-    <motion.div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Cotizador de eventos"
-      className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center"
-    >
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+    <div role="dialog" aria-modal="true" aria-label="Cotizador de eventos" className="fixed inset-0 z-[80] flex items-end justify-center sm:items-center">
+      <button
+        type="button"
         onClick={closeQuote}
-        className="absolute inset-0 bg-black/75 backdrop-blur-sm"
+        className="absolute inset-0 animate-fade-in bg-black/75 backdrop-blur-sm"
         aria-label="Cerrar cotizador"
       />
 
-      <motion.div
+      <div
         ref={panelRef}
         tabIndex={-1}
-        initial={{ opacity: 0, y: 48, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 48, scale: 0.97 }}
-        transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 flex max-h-[94vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl border border-white/10 bg-midnight-900 shadow-2xl outline-none sm:max-h-[90vh] sm:rounded-3xl"
+        className="relative z-10 flex max-h-[94vh] w-full max-w-2xl animate-zoom-in flex-col overflow-hidden rounded-t-3xl border border-white/10 bg-night-900 shadow-2xl outline-none sm:max-h-[90vh] sm:rounded-3xl"
       >
         {submitted ? (
           <div className="flex flex-col items-center px-6 py-12 text-center">
-            <motion.span
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 16 }}
-              className="flex h-16 w-16 items-center justify-center rounded-full bg-gold-500/20 text-gold-300"
-            >
+            <span className="flex h-16 w-16 animate-fade-up items-center justify-center rounded-full bg-purple-500/20 text-purple-300">
               <Check className="h-8 w-8" strokeWidth={3} />
-            </motion.span>
+            </span>
             <h2 className="mt-5 font-display text-2xl font-bold text-white">¡Tu cotización está lista!</h2>
-            <p className="mt-2 max-w-sm text-sm text-zinc-400">
+            <p className="mt-2 max-w-sm text-sm text-beige-300">
               Abrimos WhatsApp con tu resumen completo. Si no se abrió automáticamente, usa el botón de abajo.
             </p>
 
@@ -146,14 +144,14 @@ export function QuoteWizard() {
               href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-4 text-base font-bold text-midnight-950 transition-transform hover:scale-[1.02]"
+              className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-4 text-base font-bold text-night-950 transition-transform hover:scale-[1.02]"
             >
               <MessageCircle className="h-5 w-5" /> Enviar por WhatsApp
             </a>
 
             {apiStatus !== 'idle' && (
-              <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-zinc-500">
-                <ShieldCheck className="h-3.5 w-3.5 text-gold-400" />
+              <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-beige-300">
+                <ShieldCheck className="h-3.5 w-3.5 text-purple-400" />
                 {apiStatus === 'sending' && 'Registrando tu solicitud...'}
                 {apiStatus === 'sent' && 'Solicitud registrada en nuestro sistema.'}
                 {apiStatus === 'error' && 'Envío por WhatsApp disponible como respaldo.'}
@@ -161,8 +159,9 @@ export function QuoteWizard() {
             )}
 
             <button
+              type="button"
               onClick={closeQuote}
-              className="mt-4 text-sm font-semibold text-zinc-400 transition-colors hover:text-white"
+              className="mt-4 text-sm font-semibold text-beige-300 transition-colors hover:text-white"
             >
               Volver al sitio
             </button>
@@ -171,16 +170,16 @@ export function QuoteWizard() {
           <form onSubmit={onSubmit} className="flex max-h-[94vh] flex-col sm:max-h-[90vh]" noValidate>
             <div className="flex items-center justify-between gap-4 border-b border-white/10 px-6 py-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-gold-400">
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-purple-300">
                   Cotiza tu evento
                 </p>
                 <h2 className="font-display text-lg font-bold text-white">{stepper.current.title}</h2>
-                <p className="text-xs text-zinc-500">{stepper.current.subtitle}</p>
+                <p className="text-xs text-beige-300">{stepper.current.subtitle}</p>
               </div>
               <button
                 type="button"
                 onClick={closeQuote}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-300 transition-colors hover:text-white"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-beige-200 transition-colors hover:text-white"
                 aria-label="Cerrar cotizador"
               >
                 <X className="h-4 w-4" />
@@ -203,17 +202,17 @@ export function QuoteWizard() {
                         aria-label={`Paso ${index + 1}: ${step.title}`}
                         className={`flex h-8 w-8 items-center justify-center rounded-full border text-xs font-bold transition-colors ${
                           isActive
-                            ? 'border-gold-400 bg-gold-400 text-midnight-950'
+                            ? 'border-orange-400 bg-gradient-to-r from-orange-500 to-red-500 text-white'
                             : isDone
-                              ? 'border-gold-500/40 bg-gold-500/15 text-gold-300'
-                              : 'border-white/15 bg-white/5 text-zinc-500'
+                              ? 'border-orange-400/40 bg-orange-500/15 text-orange-300'
+                              : 'border-white/15 bg-white/5 text-beige-300'
                         }`}
                       >
                         {isDone ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : index + 1}
                       </button>
                       <span
                         className={`hidden text-[11px] font-medium sm:block ${
-                          isActive ? 'text-white' : 'text-zinc-500'
+                          isActive ? 'text-white' : 'text-beige-300'
                         }`}
                       >
                         {step.title}
@@ -223,28 +222,17 @@ export function QuoteWizard() {
                 })}
               </ol>
               <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/10">
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-gold-400 to-gold-600"
-                  animate={{ width: `${stepper.progress}%` }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-purple-400 to-red-500 transition-all duration-500 ease-out"
+                  style={{ width: `${stepper.progress}%` }}
                 />
               </div>
             </div>
 
             <div className="flex-1 overflow-y-auto px-6 py-6">
-              <AnimatePresence mode="wait" custom={stepper.direction}>
-                <motion.div
-                  key={stepper.current.id}
-                  custom={stepper.direction}
-                  variants={stepVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  {renderStep()}
-                </motion.div>
-              </AnimatePresence>
+              <div key={stepper.current.id} className="animate-slide-step">
+                {renderStep()}
+              </div>
             </div>
 
             <div className="flex items-center justify-between gap-3 border-t border-white/10 px-6 py-4">
@@ -257,14 +245,16 @@ export function QuoteWizard() {
                   <ArrowLeft className="h-4 w-4" /> Atrás
                 </button>
               ) : (
-                <span className="text-xs text-zinc-500">Paso {stepper.currentStep + 1} de {stepper.totalSteps}</span>
+                <span className="text-xs text-beige-300">
+                  Paso {stepper.currentStep + 1} de {stepper.totalSteps}
+                </span>
               )}
 
               {stepper.isLast ? (
                 <button
                   type="submit"
                   disabled={form.formState.isSubmitting}
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-sm font-bold text-midnight-950 transition-transform hover:scale-[1.02] disabled:opacity-60"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-sm font-bold text-night-950 transition-transform hover:scale-[1.02] disabled:opacity-60"
                 >
                   <MessageCircle className="h-4 w-4" /> Enviar cotización
                 </button>
@@ -272,7 +262,7 @@ export function QuoteWizard() {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-gold-400 to-gold-600 px-6 py-3 text-sm font-bold text-midnight-950 transition-transform hover:scale-[1.02]"
+                  className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 px-6 py-3 text-sm font-bold text-white shadow-glow-warm transition-transform hover:scale-[1.02]"
                 >
                   Continuar
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -281,7 +271,7 @@ export function QuoteWizard() {
             </div>
           </form>
         )}
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   )
 }

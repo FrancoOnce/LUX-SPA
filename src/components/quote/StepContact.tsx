@@ -17,7 +17,7 @@ export function StepContact({ form }: StepProps) {
     <div className="space-y-5">
       <Field label="Nombre completo" htmlFor="nombre" error={errors.nombre?.message}>
         <div className="relative">
-          <User className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          <User className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-beige-300" />
           <Input
             id="nombre"
             placeholder="Ej. María Fernanda Torres"
@@ -36,7 +36,7 @@ export function StepContact({ form }: StepProps) {
         hint="Con código de país. Ej. +51 999 999 999"
       >
         <div className="relative">
-          <MessageCircle className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          <MessageCircle className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-beige-300" />
           <Input
             id="whatsapp"
             type="tel"
@@ -52,7 +52,7 @@ export function StepContact({ form }: StepProps) {
 
       <Field label="Correo electrónico" htmlFor="email" error={errors.email?.message}>
         <div className="relative">
-          <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-beige-300" />
           <Input
             id="email"
             type="email"

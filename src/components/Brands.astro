@@ -1,0 +1,31 @@
+---
+import { brands } from '../data/social'
+
+const marquee = [...brands, ...brands]
+---
+<div class="mt-20">
+  <div data-reveal class="text-center">
+    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-beige-300">
+      Marcas y aliados que confían en nosotros
+    </p>
+  </div>
+
+  <div
+    data-reveal
+    class="relative mt-8 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]"
+  >
+    <div class="flex w-max animate-marquee gap-4 hover:[animation-play-state:paused]">
+      {
+        marquee.map((brand) => (
+          <div
+            class="flex h-16 min-w-[180px] items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] px-6"
+          >
+            <span class="font-display text-base font-bold uppercase tracking-wide text-beige-300 transition-colors hover:text-purple-300">
+              {brand.name}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>

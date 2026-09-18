@@ -1,0 +1,103 @@
+---
+import Icon from './Icon.astro'
+import { COMPANY_INFO, NAV_LINKS } from '../config'
+
+const socials = [
+  { icon: 'instagram', href: COMPANY_INFO.social.instagram, label: 'Instagram' },
+  { icon: 'facebook', href: COMPANY_INFO.social.facebook, label: 'Facebook' },
+  { icon: 'music', href: COMPANY_INFO.social.tiktok, label: 'TikTok' },
+  { icon: 'youtube', href: COMPANY_INFO.social.youtube, label: 'YouTube' },
+]
+---
+<footer class="relative border-t border-white/10 bg-night-950 pt-16 pb-8">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span
+            class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 font-display text-lg font-extrabold text-cream-50"
+          >
+            L
+          </span>
+          <span class="font-display text-lg font-bold text-white">
+            LUX<span class="text-purple-300"> Eventos</span>
+          </span>
+        </div>
+        <p class="mt-4 max-w-sm text-sm leading-relaxed text-beige-300">
+          {COMPANY_INFO.tagline}. Creamos experiencias inolvidables con shows temáticos, hora loca,
+          plataforma 360° y efectos especiales.
+        </p>
+        <div class="mt-5 flex gap-2">
+          {
+            socials.map((social) => (
+              <a
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.label}
+                class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-beige-200 transition-colors hover:border-purple-400/50 hover:text-purple-300"
+              >
+                <Icon name={social.icon} class="h-5 w-5" />
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <nav aria-label="Enlaces del sitio">
+        <h3 class="font-display text-sm font-bold uppercase tracking-widest text-white">Explora</h3>
+        <ul class="mt-4 space-y-3">
+          {
+            NAV_LINKS.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm text-beige-300 transition-colors hover:text-purple-300">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <button
+              type="button"
+              data-open-quote
+              class="text-sm font-semibold text-purple-300 transition-colors hover:text-purple-200"
+            >
+              Cotizar Evento
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <div>
+        <h3 class="font-display text-sm font-bold uppercase tracking-widest text-white">Contacto</h3>
+        <ul class="mt-4 space-y-3 text-sm text-beige-300">
+          <li class="flex items-center gap-2.5">
+            <Icon name="phone" class="h-4 w-4 shrink-0 text-purple-300" />
+            {COMPANY_INFO.phone}
+          </li>
+          <li class="flex items-center gap-2.5">
+            <Icon name="mail" class="h-4 w-4 shrink-0 text-purple-300" />
+            {COMPANY_INFO.email}
+          </li>
+          <li class="flex items-center gap-2.5">
+            <Icon name="map-pin" class="h-4 w-4 shrink-0 text-purple-300" />
+            {COMPANY_INFO.city}
+          </li>
+          <li class="flex items-center gap-2.5">
+            <Icon name="clock" class="h-4 w-4 shrink-0 text-purple-300" />
+            {COMPANY_INFO.hours}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-center sm:flex-row sm:text-left"
+    >
+      <p class="text-xs text-beige-300">
+        © {new Date().getFullYear()} {COMPANY_INFO.name}. Todos los derechos reservados.
+      </p>
+      <p class="text-xs text-beige-300">Hecho con pasión para eventos que se recuerdan.</p>
+    </div>
+  </div>
+</footer>

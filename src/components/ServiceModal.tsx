@@ -1,8 +1,7 @@
-import { useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 import { Clock, Plus, X, CircleCheck } from 'lucide-react'
 import { getIcon } from '../lib/icons'
-import { useQuote } from '../context/QuoteContext'
+import { getBasket, setBasket, subscribe, type Basket } from '../lib/basket'
 import type { Service } from '../types'
 
 interface ServiceModalProps {
@@ -11,8 +10,9 @@ interface ServiceModalProps {
 }
 
 export function ServiceModal({ service, onClose }: ServiceModalProps) {
-  const { presetAddons, toggleAddon } = useQuote()
-  const isSelected = presetAddons.includes(service.id)
+  const [basket, setBasketState] = useState<Basket>(() => getBasket())
+  useEffect(() => subscribe(setBasketState), [])
+  const isSelected = basket.addons.includes(service.id)
   const Icon = getIcon(service.icon)
 
   useEffect(() => {
@@ -27,33 +27,33 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
     }
   }, [onClose])
 
+  const toggleAddon = () => {
+    const addons = basket.addons
+    setBasket({
+      addons: addons.includes(service.id)
+        ? addons.filter((item) => item !== service.id)
+        : [...addons, service.id],
+    })
+  }
+
   return (
-    <motion.div
-      role="dialog"
-      aria-modal="true"
-      aria-label={`Detalles de ${service.name}`}
-      className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center"
-    >
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+    <div role="dialog" aria-modal="true" aria-label={`Detalles de ${service.name}`} className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center">
+      <button
+        type="button"
         onClick={onClose}
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0 animate-fade-in bg-black/70 backdrop-blur-sm"
         aria-label="Cerrar"
       />
 
-      <motion.div
-        initial={{ opacity: 0, y: 40, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 40, scale: 0.96 }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 w-full max-w-lg overflow-hidden rounded-t-3xl border border-white/10 bg-midnight-900 shadow-2xl sm:rounded-3xl"
+      <div
+        role="presentation"
+        className="relative z-10 w-full max-w-lg animate-zoom-in overflow-hidden rounded-t-3xl border border-white/10 bg-night-900 shadow-2xl sm:rounded-3xl"
       >
         <div className={`relative flex h-44 items-center justify-center bg-gradient-to-br ${service.accent}`}>
           <div className="absolute inset-0 bg-black/25" />
           <Icon className="relative h-16 w-16 text-white drop-shadow-lg" />
           <button
+            type="button"
             onClick={onClose}
             className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white transition-colors hover:bg-black/60"
             aria-label="Cerrar detalles"
@@ -63,16 +63,16 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
         </div>
 
         <div className="p-6">
-          <span className="text-xs font-semibold uppercase tracking-widest text-gold-400/80">
+          <span className="text-xs font-semibold uppercase tracking-widest text-purple-300">
             {service.tagline}
           </span>
           <h3 className="mt-1 font-display text-2xl font-bold text-white">{service.name}</h3>
-          <p className="mt-3 text-sm leading-relaxed text-zinc-400">{service.description}</p>
+          <p className="mt-3 text-sm leading-relaxed text-beige-300">{service.description}</p>
 
           <ul className="mt-5 space-y-2.5">
             {service.features.map((feature) => (
-              <li key={feature} className="flex items-start gap-2.5 text-sm text-zinc-300">
-                <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+              <li key={feature} className="flex items-start gap-2.5 text-sm text-beige-200">
+                <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-purple-300" />
                 {feature}
               </li>
             ))}
@@ -80,22 +80,19 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
 
           <div className="mt-6 flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
             <div>
-              <p className="text-xs uppercase tracking-wider text-zinc-500">Precio desde</p>
-              <p className="font-display text-2xl font-bold text-gold-300">S/ {service.price}</p>
+              <p className="text-xs uppercase tracking-wider text-beige-300">Precio desde</p>
+              <p className="font-display text-2xl font-bold text-purple-300">S/ {service.price}</p>
             </div>
-            <p className="flex items-center gap-1.5 text-sm text-zinc-400">
+            <p className="flex items-center gap-1.5 text-sm text-beige-300">
               <Clock className="h-4 w-4" /> {service.minDuration}
             </p>
           </div>
 
           <button
-            onClick={() => toggleAddon(service.id)}
+            type="button"
+            onClick={toggleAddon}
             aria-pressed={isSelected}
-            className={`mt-4 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-base font-bold transition-all ${
-              isSelected
-                ? 'bg-gradient-to-r from-gold-400 to-gold-600 text-midnight-950'
-                : 'bg-gradient-to-r from-gold-400 to-gold-600 text-midnight-950 hover:shadow-glow'
-            }`}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 px-4 py-3.5 text-base font-bold text-white transition-all hover:shadow-glow-warm"
           >
             {isSelected ? (
               <>
@@ -108,7 +105,7 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
             )}
           </button>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   )
 }

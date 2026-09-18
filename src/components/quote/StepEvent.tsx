@@ -20,7 +20,7 @@ export function StepEvent({ form }: StepProps) {
     <div className="space-y-5">
       <Field label="Tipo de evento" htmlFor="eventType" error={errors.eventType?.message}>
         <div className="relative">
-          <PartyPopper className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          <PartyPopper className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-beige-300" />
           <Select
             id="eventType"
             defaultValue=""
@@ -32,12 +32,12 @@ export function StepEvent({ form }: StepProps) {
               Selecciona una opción
             </option>
             {EVENT_TYPES.map((type) => (
-              <option key={type} value={type} className="bg-midnight-900">
+              <option key={type} value={type} className="bg-night-900">
                 {type}
               </option>
             ))}
           </Select>
-          <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-beige-300" />
         </div>
       </Field>
 
@@ -48,7 +48,7 @@ export function StepEvent({ form }: StepProps) {
         hint="Puede ser tentativa, la confirmamos juntos."
       >
         <div className="relative">
-          <CalendarDays className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          <CalendarDays className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-beige-300" />
           <Input
             id="date"
             type="date"
@@ -62,7 +62,7 @@ export function StepEvent({ form }: StepProps) {
 
       <Field label="Ciudad o locación" htmlFor="location" error={errors.location?.message}>
         <div className="relative">
-          <MapPin className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          <MapPin className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-beige-300" />
           <Input
             id="location"
             placeholder="Ej. Lima, Miraflores - Salón Real"

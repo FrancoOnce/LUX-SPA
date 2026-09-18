@@ -1,0 +1,170 @@
+---
+import Icon from './Icon.astro'
+import SectionHeading from './SectionHeading.astro'
+import Brands from './Brands.astro'
+import { testimonials } from '../data/social'
+
+const { items } = { items: testimonials }
+---
+<section id="testimonios" class="relative scroll-mt-24 py-20 sm:py-28">
+  <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+    <div class="absolute left-1/4 top-1/3 h-[24rem] w-[24rem] rounded-full bg-purple-700/15 blur-[120px]" />
+  </div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <SectionHeading
+      eyebrow="Prueba social"
+      title="Cientos de familias y marcas ya"
+      highlight="vivieron la experiencia"
+      description="Más de 250 eventos realizados con una calificación promedio de 4.9 / 5. Estas son algunas de sus historias."
+    />
+
+    <div class="mx-auto mt-12 max-w-3xl">
+      <div
+        data-reveal
+        class="relative overflow-hidden rounded-3xl border border-white/10 bg-night-900/70 p-8 backdrop-blur sm:p-10"
+      >
+        <Icon name="quote" class="absolute right-6 top-6 h-16 w-16 text-white/5" />
+        <div id="testimonial-stage" class="relative">
+          {
+            items.map((item, index) => (
+              <blockquote
+                data-slide={item.id}
+                class={`transition-all duration-500 ${
+                  index === 0 ? 'block' : 'pointer-events-none absolute inset-0 p-8 opacity-0 sm:p-10'
+                }`}
+              >
+                <div class="flex gap-0.5" role="img" aria-label={`${item.rating} de 5 estrellas`}>
+                  {
+                    Array.from({ length: 5 }).map((_, star) => (
+                      <Icon
+                        name="star"
+                        class={`h-4 w-4 ${star < item.rating ? 'fill-orange-400 text-orange-400' : 'text-beige-400'}`}
+                      />
+                    ))
+                  }
+                </div>
+                <p class="mt-5 text-lg leading-relaxed text-beige-100 sm:text-xl">“{item.review}”</p>
+                <footer class="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5">
+                  <div>
+                    <p class="font-display font-bold text-white">{item.name}</p>
+                    <p class="text-sm text-beige-300">{item.role}</p>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-sm font-semibold text-purple-300">{item.eventType}</p>
+                    <p class="text-xs text-beige-300">{item.date}</p>
+                  </div>
+                </footer>
+              </blockquote>
+            ))
+          }
+        </div>
+
+        <div class="mt-8 flex items-center justify-between">
+          <div id="testimonial-dots" class="flex gap-2" role="tablist" aria-label="Seleccionar testimonio">
+            {
+              items.map((item, index) => (
+                <button
+                  type="button"
+                  data-dot={index}
+                  class={`h-2 rounded-full transition-all ${index === 0 ? 'w-6 bg-purple-400' : 'w-2 bg-white/20 hover:bg-white/40'}`}
+                  role="tab"
+                  aria-selected={index === 0}
+                  aria-label={`Testimonio de ${item.name}`}
+                >
+                </button>
+              ))
+            }
+          </div>
+          <div class="flex gap-2">
+            <button
+              id="testimonial-prev"
+              type="button"
+              aria-label="Testimonio anterior"
+              class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors hover:border-purple-400/50 hover:text-purple-300"
+            >
+              <Icon name="chevron-left" class="h-5 w-5" />
+            </button>
+            <button
+              id="testimonial-next"
+              type="button"
+              aria-label="Siguiente testimonio"
+              class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors hover:border-purple-400/50 hover:text-purple-300"
+            >
+              <Icon name="chevron-right" class="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal class="mt-6 grid gap-3 sm:grid-cols-3">
+        {
+          items.slice(0, 3).map((item) => (
+            <button
+              data-preview={item.id}
+              type="button"
+              class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-left transition-colors hover:border-purple-400/30"
+            >
+              <div class="flex gap-0.5" role="img" aria-label={`${item.rating} de 5 estrellas`}>
+                {
+                  Array.from({ length: 5 }).map((_, star) => (
+                    <Icon
+                      name="star"
+                      class={`h-4 w-4 ${star < item.rating ? 'fill-orange-400 text-orange-400' : 'text-beige-400'}`}
+                    />
+                  ))
+                }
+              </div>
+              <p class="mt-2 line-clamp-2 text-sm text-beige-300">{item.review}</p>
+              <p class="mt-2 text-xs font-semibold text-beige-200">{item.name}</p>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <Brands />
+</section>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('#testimonial-stage [data-slide]')) as HTMLElement[]
+  const dots = Array.from(document.querySelectorAll('#testimonial-dots [data-dot]')) as HTMLButtonElement[]
+  const previews = Array.from(document.querySelectorAll('[data-preview]')) as HTMLButtonElement[]
+  const prev = document.querySelector<HTMLButtonElement>('#testimonial-prev')!
+  const next = document.querySelector<HTMLButtonElement>('#testimonial-next')!
+
+  let active = 0
+
+  function show(index: number) {
+    active = (index + slides.length) % slides.length
+    slides.forEach((slide, i) => {
+      const show = i === active
+      slide.classList.toggle('block', show)
+      slide.classList.toggle('absolute', !show)
+      slide.classList.toggle('inset-0', !show)
+      slide.classList.toggle('p-8', !show)
+      slide.classList.toggle('sm:p-10', !show)
+      slide.classList.toggle('pointer-events-none', !show)
+      slide.classList.toggle('opacity-0', !show)
+    })
+    dots.forEach((dot, i) => {
+      const isActive = i === active
+      dot.classList.toggle('w-6', isActive)
+      dot.classList.toggle('bg-purple-400', isActive)
+      dot.classList.toggle('w-2', !isActive)
+      dot.classList.toggle('bg-white/20', !isActive)
+      dot.setAttribute('aria-selected', String(isActive))
+    })
+  }
+
+  prev.addEventListener('click', () => show(active - 1))
+  next.addEventListener('click', () => show(active + 1))
+  dots.forEach((dot) => dot.addEventListener('click', () => show(Number(dot.dataset.dot))))
+  previews.forEach((preview) =>
+    preview.addEventListener('click', () => {
+      const index = slides.findIndex((slide) => slide.dataset.slide === preview.dataset.preview)
+      if (index !== -1) show(index)
+    }),
+  )
+</script>

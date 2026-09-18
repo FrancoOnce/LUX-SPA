@@ -1,4 +1,4 @@
-# SPA Eventos — Landing Page de Alta Conversión
+# LUX Eventos — Landing Page de Alta Conversión
 
 Landing page moderna, interactiva y responsive para una empresa de producción de eventos y
 entretenimiento artístico (shows temáticos, hora loca, plataforma 360°, tótems fotográficos,
@@ -8,84 +8,75 @@ coreografías y efectos especiales).
 
 | Capa | Tecnología |
 | --- | --- |
-| Framework | React 18 + Vite + TypeScript |
-| Estilos | Tailwind CSS (mobile-first, dark premium con acentos dorados/neón) |
-| Animaciones | Framer Motion |
-| Iconos | Lucide React |
-| Formularios | React Hook Form + Zod |
-| Estado global | React Context + hooks personalizados |
+| Framework | Astro (SSG) + islas React |
+| Estilos | Tailwind CSS (dark premium, beige / morado / crema / naranja / rojo) |
+| Islas interactivas | React (wizard de cotización y catálogo de servicios) |
+| Sin JS | Navbar, Hero, Paquetes, Nosotros, Testimonios, Footer (vanilla + CSS) |
+| Formularios | React Hook Form + Zod (solo se carga al abrir el cotizador) |
+| Iconos | SVG inline (estático) + Lucide (islas) |
+| Animaciones | CSS puro · Framework Motion descartado a favor de keyframes |
+| Estado global | `window.__spaBasket` + CustomEvents (compartido entre islas y vanilla) |
 
 ## Inicio rápido
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # typecheck + build de producción
-npm run preview  # sirve el build
+npm run dev       # http://localhost:4321
+npm run build     # build estático + generación de tipos
+npm run preview   # sirve el build
+npm run check     # astro check (tipos)
+npm run verify    # smoke test con Chrome headless (requiere npm run preview)
 ```
 
 ## Estructura de carpetas
 
 ```
 SPA-EVENTOS/
-├── index.html
-├── package.json
-├── tailwind.config.ts
+├── astro.config.mjs
 ├── postcss.config.js
-├── tsconfig.json / tsconfig.app.json / tsconfig.node.json
-├── vite.config.ts
+├── tailwind.config.ts       # paleta: night (fondo morado), cream, beige + gradientes
+├── scripts/
+│   └── verify.mjs           # smoke test end-to-end (puppeteer-core)
 └── src/
-    ├── main.tsx
-    ├── App.tsx
-    ├── index.css
-    ├── config.ts                  # Marca, WhatsApp, IGV, tipos de evento, links
-    ├── types/
-    │   └── index.ts               # Interfaces y tipos estrictos
+    ├── Layout.astro         # shell (SEO, fuentes) + scripts globales
+    ├── global.css           # base Tailwind + reveals CSS y prefers-reduced-motion
+    ├── config.ts            # Marca, WhatsApp, IGV, tipos de evento, links
+    ├── types/index.ts       # Interfaces y tipos estrictos
     ├── data/
-    │   ├── services.ts            # Catálogo de servicios
-    │   ├── packages.ts            # Paquetes comparativos
-    │   ├── social.ts              # Testimonios y marcas aliadas
-    │   └── categories.ts          # Filtros del catálogo
+    │   ├── services.ts      # Catálogo de servicios
+    │   ├── packages.ts      # Paquetes comparativos
+    │   ├── social.ts        # Testimonios y marcas aliadas
+    │   └── categories.ts    # Filtros del catálogo
     ├── lib/
-    │   ├── quote.ts               # Schemas Zod + cálculo de cotización
-    │   ├── whatsapp.ts            # Construcción del mensaje y envío (WhatsApp / API)
-    │   ├── format.ts              # Formateadores de moneda y fecha
-    │   └── icons.ts               # Registro dinámico de iconos Lucide
-    ├── hooks/
-    │   └── useMultiStepForm.ts    # Navegación entre pasos + progreso
-    ├── context/
-    │   └── QuoteContext.tsx       # Estado del cotizador (preselección, modal)
+    │   ├── quote.ts         # Schemas Zod + cálculo de cotización
+    │   ├── whatsapp.ts      # Construcción del mensaje y envío (WhatsApp / API)
+    │   ├── format.ts        # Formateadores de moneda y fecha
+    │   ├── icons.ts         # Registro de iconos Lucide (islas React)
+    │   ├── basket.ts        # Puente de estado global (CustomEvents)
+    │   └── useMultiStepForm.ts
+    ├── pages/
+    │   └── index.astro      # Compone todas las secciones
     └── components/
-        ├── Navbar.tsx
-        ├── Hero.tsx
-        ├── Services.tsx
-        ├── ServiceModal.tsx
-        ├── Packages.tsx
-        ├── About.tsx
-        ├── Testimonials.tsx
-        ├── Brands.tsx
-        ├── Footer.tsx
-        ├── WhatsAppButton.tsx
-        ├── ui/
-        │   ├── AnimatedCounter.tsx
-        │   ├── Reveal.tsx
-        │   └── SectionHeading.tsx
-        └── quote/
-            ├── QuoteWizard.tsx    # Modal multi-paso
-            ├── StepContact.tsx
-            ├── StepEvent.tsx
-            ├── StepServices.tsx
-            ├── StepSummary.tsx
-            └── Field.tsx          # Inputs + mensajes de error accesibles
+        ├── Icon.astro       # SVG inline reutilizables (secciones estáticas)
+        ├── SectionHeading.astro
+        ├── Navbar.astro / Hero.astro / Packages.astro / About.astro
+        ├── Testimonials.astro / Brands.astro / Footer.astro / WhatsAppButton.astro
+        ├── Services.tsx     # Isla React: filtros + modal + toggle a cotización
+        ├── ServiceModal.tsx # Modal de detalle de servicio
+        └── quote/           # Wizard de cotización (isla React, 4 pasos)
 ```
 
-## Flujo de conversión
+## Arquitectura de islas y estado
 
-1. **Navbar / Hero / Paquetes / Servicios** abren el cotizador mediante `QuoteContext`.
-2. Los servicios y paquetes se pueden **preseleccionar**; el badge del navbar refleja la selección.
-3. El **wizard** valida cada paso con Zod (`trigger` por grupo de campos) antes de avanzar.
-4. En el resumen se calcula el total (`useQuoteCalculator`) y se genera un **mensaje formateado**
-   que se envía por `https://wa.me/...` o por API si `QUOTE_API_ENDPOINT` está configurado.
+El estado de selección vive en `window.__spaBasket` (`{ packageId, addons }`) y se sincroniza
+mediante dos CustomEvents:
+
+- `spa:basket` → lo escuchan el navbar (badge) y las islas React para refrescar selección.
+- `spa:open-quote` → lo dispara cualquier CTA `[data-open-quote]` del HTML estático; la isla
+  `QuoteWizard` escucha y abre el cotizador con los presets del basket.
+
+Los botones `data-open-quote` (navbar, hero, paquetes, footer, menú móvil) usan delegation en
+`Layout.astro`, por lo que no cargan React.
 
 ## Personalización
 
@@ -96,6 +87,7 @@ Edita `src/config.ts`:
 - `COMPANY_INFO`, `EVENT_TYPES`, `IGV_RATE`.
 
 Contenido editable en `src/data/`: `services.ts`, `packages.ts`, `social.ts`.
+Paleta y gradientes en `tailwind.config.ts`.
 
 ## Accesibilidad
 

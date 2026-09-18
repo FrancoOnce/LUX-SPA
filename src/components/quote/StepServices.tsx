@@ -3,7 +3,7 @@ import { Check, Crown, Plus } from 'lucide-react'
 import type { QuoteFormData } from '../../types'
 import { packages } from '../../data/packages'
 import { services } from '../../data/services'
-import { useQuote } from '../../context/QuoteContext'
+import { setBasket } from '../../lib/basket'
 import { getIcon } from '../../lib/icons'
 import { formatPrice } from '../../lib/format'
 
@@ -12,7 +12,6 @@ interface StepProps {
 }
 
 export function StepServices({ form }: StepProps) {
-  const { selectPackage, toggleAddon } = useQuote()
   const {
     watch,
     setValue,
@@ -24,25 +23,22 @@ export function StepServices({ form }: StepProps) {
 
   const handlePackage = (id: string) => {
     setValue('packageId', id, { shouldDirty: true, shouldValidate: true })
-    selectPackage(id)
+    setBasket({ packageId: id })
   }
 
   const handleAddon = (id: string) => {
-    setValue(
-      'addons',
-      addons.includes(id) ? addons.filter((item) => item !== id) : [...addons, id],
-      { shouldDirty: true },
-    )
-    toggleAddon(id)
+    const next = addons.includes(id) ? addons.filter((item) => item !== id) : [...addons, id]
+    setValue('addons', next, { shouldDirty: true })
+    setBasket({ addons: next })
   }
 
   return (
     <div className="space-y-7">
       <div>
         <h3 className="font-display text-base font-bold text-white">1. Elige tu paquete base</h3>
-        <p className="mt-1 text-sm text-zinc-400">Puedes cambiarlo cuando quieras.</p>
+        <p className="mt-1 text-sm text-beige-300">Puedes cambiarlo cuando quieras.</p>
         {errors.packageId && (
-          <p role="alert" className="mt-2 text-xs font-medium text-rose-400">
+          <p role="alert" className="mt-2 text-xs font-medium text-red-400">
             {errors.packageId.message}
           </p>
         )}
@@ -58,25 +54,25 @@ export function StepServices({ form }: StepProps) {
                 aria-pressed={selected}
                 className={`rounded-2xl border p-4 text-left transition-all ${
                   selected
-                    ? 'border-gold-500/60 bg-gold-500/10 shadow-glow'
+                    ? 'border-purple-400/60 bg-purple-400/10 shadow-glow'
                     : 'border-white/10 bg-white/[0.03] hover:border-white/25'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-2 font-display font-bold text-white">
-                    <Crown className={`h-4 w-4 ${selected ? 'text-gold-400' : 'text-zinc-500'}`} />
+                    <Crown className={`h-4 w-4 ${selected ? 'text-purple-300' : 'text-beige-300'}`} />
                     {pkg.name}
                   </span>
                   <span
                     className={`flex h-5 w-5 items-center justify-center rounded-full border ${
-                      selected ? 'border-gold-400 bg-gold-400 text-midnight-950' : 'border-white/20'
+                      selected ? 'border-purple-400 bg-purple-400 text-night-950' : 'border-white/20'
                     }`}
                   >
                     {selected && <Check className="h-3 w-3" strokeWidth={3} />}
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-zinc-400">{pkg.tagline}</p>
-                <p className="mt-2 text-sm font-bold text-gold-300">S/ {formatPrice(pkg.price)}</p>
+                <p className="mt-1 text-xs text-beige-300">{pkg.tagline}</p>
+                <p className="mt-2 text-sm font-bold text-purple-300">S/ {formatPrice(pkg.price)}</p>
               </button>
             )
           })}
@@ -85,7 +81,7 @@ export function StepServices({ form }: StepProps) {
 
       <div>
         <h3 className="font-display text-base font-bold text-white">2. Suma servicios adicionales</h3>
-        <p className="mt-1 text-sm text-zinc-400">
+        <p className="mt-1 text-sm text-beige-300">
           {addons.length > 0 ? `${addons.length} servicio(s) seleccionado(s)` : 'Opcional, personaliza tu experiencia.'}
         </p>
 
@@ -101,22 +97,22 @@ export function StepServices({ form }: StepProps) {
                 aria-pressed={selected}
                 className={`flex items-center gap-3 rounded-xl border px-3.5 py-3 text-left transition-all ${
                   selected
-                    ? 'border-gold-500/60 bg-gold-500/10'
+                    ? 'border-purple-400/60 bg-purple-400/10'
                     : 'border-white/10 bg-white/[0.03] hover:border-white/25'
                 }`}
               >
                 <span
                   className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-                    selected ? 'bg-gold-400 text-midnight-950' : 'bg-white/10 text-zinc-300'
+                    selected ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white' : 'bg-white/10 text-beige-200'
                   }`}
                 >
                   {selected ? <Check className="h-4 w-4" strokeWidth={3} /> : <Icon className="h-4 w-4" />}
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-semibold text-white">{service.name}</span>
-                  <span className="block text-xs text-zinc-400">S/ {formatPrice(service.price)}</span>
+                  <span className="block text-xs text-beige-300">S/ {formatPrice(service.price)}</span>
                 </span>
-                {!selected && <Plus className="h-4 w-4 shrink-0 text-zinc-500" />}
+                {!selected && <Plus className="h-4 w-4 shrink-0 text-beige-300" />}
               </button>
             )
           })}

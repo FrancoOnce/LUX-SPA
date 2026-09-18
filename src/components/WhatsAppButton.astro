@@ -1,0 +1,27 @@
+---
+import Icon from './Icon.astro'
+import { buildWhatsAppUrl } from '../lib/whatsapp'
+
+const defaultMessage =
+  '¡Hola LUX Eventos! 👋 Quiero información para cotizar la producción de mi evento. ¿Me pueden ayudar?'
+---
+<a
+  href={buildWhatsAppUrl(defaultMessage)}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Escríbenos por WhatsApp"
+  class="group fixed bottom-5 right-5 z-50 flex items-center gap-3 sm:bottom-7 sm:right-7"
+>
+  <span
+    class="pointer-events-none hidden translate-x-2 rounded-xl border border-white/10 bg-night-900/95 px-3.5 py-2 text-sm font-semibold text-white opacity-0 shadow-xl backdrop-blur transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 sm:block"
+  >
+    ¿Cotizamos tu evento?
+  </span>
+
+  <span
+    class="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-[0_10px_30px_-6px_rgba(37,211,102,0.7)]"
+  >
+    <span class="absolute inset-0 rounded-full bg-[#25D366] opacity-70 animate-ping"></span>
+    <Icon name="message-circle" class="relative h-7 w-7 fill-white text-white" />
+  </span>
+</a>

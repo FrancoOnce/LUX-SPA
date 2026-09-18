@@ -1,0 +1,29 @@
+---
+import Layout from '../Layout.astro'
+import Navbar from '../components/Navbar.astro'
+import Hero from '../components/Hero.astro'
+import { Services } from '../components/Services.tsx'
+import Packages from '../components/Packages.astro'
+import About from '../components/About.astro'
+import Testimonials from '../components/Testimonials.astro'
+import Footer from '../components/Footer.astro'
+import WhatsAppButton from '../components/WhatsAppButton.astro'
+import { QuoteWizard } from '../components/quote/QuoteWizard.tsx'
+
+const title = 'LUX Eventos | Producción de Eventos y Entretenimiento Artístico'
+const description =
+  'Producción de eventos y entretenimiento artístico: shows temáticos, hora loca, plataforma 360°, tótems fotográficos, coreografías y efectos especiales.'
+---
+<Layout title={title} description={description}>
+  <Navbar />
+  <main>
+    <Hero />
+    <Services client:load />
+    <Packages />
+    <About />
+    <Testimonials />
+  </main>
+  <Footer />
+  <WhatsAppButton />
+  <QuoteWizard client:load />
+</Layout>
