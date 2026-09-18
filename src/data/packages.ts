@@ -1,0 +1,81 @@
+import type { Package } from '../types'
+
+export const packages: Package[] = [
+  {
+    id: 'esencial',
+    name: 'Esencial',
+    tagline: 'Perfecto para arrancar la fiesta',
+    price: 1499,
+    originalPrice: 1799,
+    hours: 4,
+    performers: 6,
+    features: [
+      '1 show temático de hora loca',
+      'Chisperos fríos (4 unidades)',
+      'Presentador / animador',
+      'Coreografía base',
+      'Sonido e iluminación básica',
+      'Personajes de bienvenida',
+    ],
+  },
+  {
+    id: 'vip',
+    name: 'VIP',
+    tagline: 'Más shows, más impacto',
+    price: 2499,
+    originalPrice: 2899,
+    hours: 5,
+    performers: 10,
+    features: [
+      '2 shows temáticos de hora loca',
+      'Chisperos fríos (8 unidades)',
+      'Presentador + DJ profesional',
+      'Coreografías personalizadas',
+      'Cabina 360 / tótem fotográfico',
+      'Confeti en momentos clave',
+      'Coordinador de producción',
+    ],
+  },
+  {
+    id: 'platinum',
+    name: 'Platinum',
+    tagline: 'La experiencia más elegida',
+    price: 3499,
+    originalPrice: 4199,
+    recommended: true,
+    hours: 5,
+    performers: 12,
+    features: [
+      '2 shows temáticos + show sorpresa',
+      'Chisperos fríos (12 unidades)',
+      'Plataforma 360° con video',
+      'Presentador + DJ + coreografías',
+      'Pistola CO₂ en el clímax',
+      'Cañones de confeti programados',
+      'Ambientación premium con neón',
+      'Coordinador de producción dedicado',
+    ],
+  },
+  {
+    id: 'experiencia-total',
+    name: 'Experiencia Total',
+    tagline: 'El evento de tus sueños, sin límites',
+    price: 4999,
+    hours: 6,
+    performers: 16,
+    features: [
+      '3 shows temáticos personalizados',
+      'Chisperos fríos (20 unidades)',
+      'Plataforma 360° + cabina de fotos',
+      'Aftermovie profesional (opción dron)',
+      'Espectáculo de luces LED',
+      'Pistola CO₂ + confeti + pirotecnia fría',
+      'Decoración completa y ambientación',
+      'Silent Disco como extra opcional',
+      'Productor ejecutivo de evento',
+    ],
+  },
+]
+
+export const getPackageById = (id: string): Package | undefined =>
+  packages.find((pkg) => pkg.id === id)
