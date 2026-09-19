@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from 'react'
+import { forwardRef, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes } from 'react'
 
 const baseField =
   'w-full rounded-xl border bg-night-950/60 px-4 py-3 text-sm text-cream-50 placeholder:text-beige-400 outline-none transition-colors focus:border-purple-400/60 focus:ring-2 focus:ring-purple-400/20'
@@ -31,21 +31,34 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   hasError?: boolean
 }
 
-export function Input({ hasError, className = '', ...props }: InputProps) {
-  return <input className={`${baseField} ${hasError ? 'border-red-500/60' : 'border-white/10'} ${className}`} {...props} />
-}
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  { hasError, className = '', ...props },
+  ref,
+) {
+  return (
+    <input
+      ref={ref}
+      className={`${baseField} ${hasError ? 'border-red-500/60' : 'border-white/10'} ${className}`}
+      {...props}
+    />
+  )
+})
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   hasError?: boolean
 }
 
-export function Select({ hasError, className = '', children, ...props }: SelectProps) {
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
+  { hasError, className = '', children, ...props },
+  ref,
+) {
   return (
     <select
+      ref={ref}
       className={`${baseField} appearance-none ${hasError ? 'border-red-500/60' : 'border-white/10'} ${className}`}
       {...props}
     >
       {children}
     </select>
   )
-}
+})

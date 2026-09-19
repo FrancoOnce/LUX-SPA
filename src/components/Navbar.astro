@@ -12,13 +12,13 @@ import { NAV_LINKS } from '../config'
   >
     <a href="#inicio" class="group flex items-center gap-2.5" aria-label="LUX Eventos - Inicio">
       <span
-        class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 font-display text-lg font-extrabold text-cream-50 shadow-glow transition-transform group-hover:scale-105"
+        class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 font-display text-lg font-extrabold text-white shadow-glow transition-transform group-hover:scale-105"
       >
         L
       </span>
       <span class="flex flex-col leading-none">
-        <span class="font-display text-lg font-bold tracking-tight text-white">
-          LUX<span class="text-purple-300"> Eventos</span>
+        <span class="font-display text-lg font-bold tracking-tight text-cream-100">
+          LUX<span class="text-purple-600"> Eventos</span>
         </span>
         <span class="text-[10px] font-medium uppercase tracking-[0.2em] text-beige-300">
           Producciones
@@ -33,7 +33,7 @@ import { NAV_LINKS } from '../config'
             <li>
               <a
                 href={link.href}
-                class="text-sm font-medium text-beige-300 transition-colors hover:text-purple-300"
+                class="text-sm font-medium text-beige-300 transition-colors hover:text-purple-600"
               >
                 {link.label}
               </a>
@@ -48,7 +48,7 @@ import { NAV_LINKS } from '../config'
       >
         <Icon name="message-circle" class="h-4 w-4" />
         Cotizar Evento
-        <span id="quote-badge" hidden class="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-400 px-1 text-[10px] font-bold text-night-950">
+        <span id="quote-badge" hidden class="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-purple-400 px-1 text-[10px] font-bold text-cream-100">
         </span>
       </button>
     </div>
@@ -56,7 +56,7 @@ import { NAV_LINKS } from '../config'
     <button
       id="menu-button"
       type="button"
-      class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white lg:hidden"
+      class="flex h-10 w-10 items-center justify-center rounded-xl border border-beige-300/35 bg-white/80 text-cream-100 lg:hidden"
       aria-label="Abrir menú"
       aria-expanded="false"
       aria-controls="mobile-menu"
@@ -66,14 +66,14 @@ import { NAV_LINKS } from '../config'
     </button>
   </nav>
 
-  <div id="mobile-menu" class="hidden border-t border-white/10 bg-night-950/90 backdrop-blur-2xl lg:hidden">
+  <div id="mobile-menu" class="hidden border-t border-beige-300/35 bg-night-950/90 backdrop-blur-2xl lg:hidden">
     <ul class="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-6">
       {
         NAV_LINKS.map((link) => (
           <li>
             <a
               href={link.href}
-              class="block w-full rounded-lg px-3 py-3 text-base font-medium text-beige-200 transition-colors hover:bg-white/5 hover:text-purple-300"
+              class="block w-full rounded-lg px-3 py-3 text-base font-medium text-beige-200 transition-colors hover:bg-white/80 hover:text-purple-600"
             >
               {link.label}
             </a>
@@ -97,7 +97,7 @@ import { NAV_LINKS } from '../config'
 <style>
   /* Translucent chrome: hairline + material weight appear only once content scrolls under. */
   .nav-scrolled {
-    @apply border-b border-white/[0.06] bg-night-900/70 shadow-[0_8px_32px_-16px_rgba(0,0,0,0.7)] backdrop-blur-2xl;
+    @apply border-b border-beige-300/30 bg-night-900/70 shadow-[0_8px_32px_-16px_rgba(0,0,0,0.25)] backdrop-blur-2xl;
   }
 
   #mobile-menu.open {

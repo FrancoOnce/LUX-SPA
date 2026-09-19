@@ -13,6 +13,7 @@ export const services: Service[] = [
     minDuration: '80 min',
     icon: 'PartyPopper',
     accent: 'from-amber-500 to-orange-600',
+    image: '/images/services/HoraLocaTematica.webp',
     popular: true,
   },
   {
@@ -27,6 +28,7 @@ export const services: Service[] = [
     minDuration: '60 min',
     icon: 'Music',
     accent: 'from-violet-500 to-fuchsia-600',
+    image: '/images/services/ShowMusicalEnVivo.webp',
   },
   {
     id: 'animador',
@@ -40,6 +42,7 @@ export const services: Service[] = [
     minDuration: '4 horas',
     icon: 'Mic',
     accent: 'from-sky-500 to-cyan-500',
+    image: '/images/services/Presentador-Animador.webp',
   },
   {
     id: 'coreografia',
@@ -53,6 +56,7 @@ export const services: Service[] = [
     minDuration: '2 bloques',
     icon: 'Users',
     accent: 'from-rose-500 to-pink-600',
+    image: '/images/services/Coreografias-Flashmob.webp',
   },
   {
     id: 'plataforma-360',
@@ -66,6 +70,7 @@ export const services: Service[] = [
     minDuration: '4 horas',
     icon: 'Orbit',
     accent: 'from-amber-500 to-yellow-500',
+    image: '/images/services/Plataforma360.webp',
     popular: true,
   },
   {
@@ -80,6 +85,7 @@ export const services: Service[] = [
     minDuration: '4 horas',
     icon: 'Camera',
     accent: 'from-fuchsia-500 to-purple-600',
+    image: '/images/services/totem-360.jpg',
   },
   {
     id: 'cabina-fotos',
@@ -93,6 +99,7 @@ export const services: Service[] = [
     minDuration: '4 horas',
     icon: 'Video',
     accent: 'from-teal-500 to-emerald-500',
+    image: '/images/services/cabina-fotos.jpg',
   },
   {
     id: 'video-aftermovie',
@@ -106,6 +113,7 @@ export const services: Service[] = [
     minDuration: 'Cobertura total',
     icon: 'Video',
     accent: 'from-blue-500 to-indigo-600',
+    image: '/images/services/video-aftermovie.jpg',
   },
   {
     id: 'chisperos',
@@ -119,6 +127,7 @@ export const services: Service[] = [
     minDuration: 'Por unidad',
     icon: 'Flame',
     accent: 'from-orange-500 to-red-600',
+    image: '/images/services/chisperos.jpg',
   },
   {
     id: 'pistola-co2',
@@ -132,6 +141,7 @@ export const services: Service[] = [
     minDuration: 'Por disparo',
     icon: 'Snowflake',
     accent: 'from-slate-400 to-slate-600',
+    image: '/images/services/pistola-co2.jpg',
   },
   {
     id: 'confeti',
@@ -145,6 +155,7 @@ export const services: Service[] = [
     minDuration: 'Por cañón',
     icon: 'Zap',
     accent: 'from-lime-500 to-green-600',
+    image: '/images/services/confeti.jpg',
   },
   {
     id: 'ambientacion',
@@ -158,6 +169,7 @@ export const services: Service[] = [
     minDuration: 'Full service',
     icon: 'Palette',
     accent: 'from-pink-500 to-rose-600',
+    image: '/images/services/ambientacion.jpg',
   },
   {
     id: 'silent-dj',
@@ -171,6 +183,7 @@ export const services: Service[] = [
     minDuration: '4 horas',
     icon: 'Headphones',
     accent: 'from-cyan-500 to-blue-600',
+    image: '/images/services/silent-dj.jpg',
   },
   {
     id: 'dj-sonido',
@@ -184,6 +197,7 @@ export const services: Service[] = [
     minDuration: '6 horas',
     icon: 'Disc3',
     accent: 'from-indigo-500 to-violet-600',
+    image: '/images/services/dj-sonido.jpg',
   },
 ]
 

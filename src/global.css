@@ -5,14 +5,14 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    color-scheme: dark;
+    color-scheme: light;
     -webkit-tap-highlight-color: transparent;
   }
 
   body {
     @apply bg-night-950 font-body text-beige-300 antialiased;
-    background-image: radial-gradient(circle at 20% -10%, rgba(139, 92, 246, 0.14), transparent 45%),
-      radial-gradient(circle at 90% 10%, rgba(249, 115, 22, 0.1), transparent 40%);
+    background-image: radial-gradient(circle at 20% -10%, rgba(139, 92, 246, 0.1), transparent 45%),
+      radial-gradient(circle at 90% 10%, rgba(249, 115, 22, 0.07), transparent 40%);
     font-optical-sizing: auto;
   }
 
@@ -37,17 +37,17 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #140b22;
+    background: #f6efe2;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #2f2050;
+    background: #d9c6a4;
     border-radius: 9999px;
-    border: 2px solid #140b22;
+    border: 2px solid #f6efe2;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #45316e;
+    background: #cbb48e;
   }
 }
 
@@ -63,10 +63,10 @@
 
   /* Translucent surface — content scrolls underneath. */
   .glass {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(20px) saturate(160%);
     -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.6);
   }
 }
 

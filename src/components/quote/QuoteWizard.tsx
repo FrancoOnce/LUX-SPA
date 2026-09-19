@@ -139,16 +139,16 @@ export function QuoteWizard() {
       <div
         ref={panelRef}
         tabIndex={-1}
-        className={`relative z-10 flex max-h-[94vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl border border-white/10 bg-night-900/95 shadow-2xl outline-none backdrop-blur-2xl sm:max-h-[90vh] sm:rounded-3xl ${
+        className={`relative z-10 flex max-h-[94vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl border border-beige-300/35 bg-night-900/95 shadow-2xl outline-none backdrop-blur-2xl sm:max-h-[90vh] sm:rounded-3xl ${
           leaving ? 'animate-sheet-out' : 'animate-sheet-in'
         }`}
       >
         {submitted ? (
           <div className="flex flex-col items-center px-6 py-12 text-center">
-            <span className="flex h-16 w-16 animate-fade-up items-center justify-center rounded-full bg-purple-500/20 text-purple-300">
+            <span className="flex h-16 w-16 animate-fade-up items-center justify-center rounded-full bg-purple-500/20 text-purple-600">
               <Check className="h-8 w-8" strokeWidth={3} />
             </span>
-            <h2 className="mt-5 font-display text-2xl font-bold text-white">¡Tu cotización está lista!</h2>
+            <h2 className="mt-5 font-display text-2xl font-bold text-cream-100">¡Tu cotización está lista!</h2>
             <p className="mt-2 max-w-sm text-sm text-beige-300">
               Abrimos WhatsApp con tu resumen completo. Si no se abrió automáticamente, usa el botón de abajo.
             </p>
@@ -157,7 +157,7 @@ export function QuoteWizard() {
               href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-4 text-base font-bold text-night-950 transition-transform hover:scale-[1.02]"
+              className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-4 text-base font-bold text-cream-100 transition-transform hover:scale-[1.02]"
             >
               <MessageCircle className="h-5 w-5" /> Enviar por WhatsApp
             </a>
@@ -174,25 +174,25 @@ export function QuoteWizard() {
             <button
               type="button"
               onClick={closeQuote}
-              className="mt-4 text-sm font-semibold text-beige-300 transition-colors hover:text-white"
+              className="mt-4 text-sm font-semibold text-beige-300 transition-colors hover:text-cream-100"
             >
               Volver al sitio
             </button>
           </div>
         ) : (
           <form onSubmit={onSubmit} className="flex max-h-[94vh] flex-col sm:max-h-[90vh]" noValidate>
-            <div className="flex items-center justify-between gap-4 border-b border-white/10 px-6 py-4">
+            <div className="flex items-center justify-between gap-4 border-b border-beige-300/35 px-6 py-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-purple-300">
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-purple-600">
                   Cotiza tu evento
                 </p>
-                <h2 className="font-display text-lg font-bold text-white">{stepper.current.title}</h2>
+                <h2 className="font-display text-lg font-bold text-cream-100">{stepper.current.title}</h2>
                 <p className="text-xs text-beige-300">{stepper.current.subtitle}</p>
               </div>
               <button
                 type="button"
                 onClick={closeQuote}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-beige-200 transition-colors hover:text-white"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-beige-300/35 bg-white/80 text-beige-200 transition-colors hover:text-cream-100"
                 aria-label="Cerrar cotizador"
               >
                 <X className="h-4 w-4" />
@@ -217,15 +217,15 @@ export function QuoteWizard() {
                           isActive
                             ? 'border-orange-400 bg-gradient-to-r from-orange-500 to-red-500 text-white'
                             : isDone
-                              ? 'border-orange-400/40 bg-orange-500/15 text-orange-300'
-                              : 'border-white/15 bg-white/5 text-beige-300'
+                              ? 'border-orange-400/40 bg-orange-500/15 text-orange-500'
+                              : 'border-beige-300/45 bg-white/80 text-beige-300'
                         }`}
                       >
                         {isDone ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : index + 1}
                       </button>
                       <span
                         className={`hidden text-[11px] font-medium sm:block ${
-                          isActive ? 'text-white' : 'text-beige-300'
+                          isActive ? 'text-cream-100' : 'text-beige-300'
                         }`}
                       >
                         {step.title}
@@ -234,7 +234,7 @@ export function QuoteWizard() {
                   )
                 })}
               </ol>
-              <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/10">
+              <div className="mt-3 h-1 overflow-hidden rounded-full bg-beige-300/30">
                 <div
                   className="h-full rounded-full bg-gradient-to-r from-purple-400 to-red-500 transition-all duration-500 ease-out"
                   style={{ width: `${stepper.progress}%` }}
@@ -248,12 +248,12 @@ export function QuoteWizard() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between gap-3 border-t border-white/10 px-6 py-4">
+            <div className="flex items-center justify-between gap-3 border-t border-beige-300/35 px-6 py-4">
               {!stepper.isFirst ? (
                 <button
                   type="button"
                   onClick={stepper.back}
-                  className="press inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-white/25"
+                  className="press inline-flex items-center gap-1.5 rounded-xl border border-beige-300/35 bg-white/80 px-5 py-3 text-sm font-semibold text-cream-100 transition-colors hover:border-beige-300/55"
                 >
                   <ArrowLeft className="h-4 w-4" /> Atrás
                 </button>
@@ -267,7 +267,7 @@ export function QuoteWizard() {
                 <button
                   type="submit"
                   disabled={form.formState.isSubmitting}
-                  className="press inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-sm font-bold text-night-950 transition-transform hover:scale-[1.02] disabled:opacity-60"
+                  className="press inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-sm font-bold text-cream-100 transition-transform hover:scale-[1.02] disabled:opacity-60"
                 >
                   <MessageCircle className="h-4 w-4" /> Enviar cotización
                 </button>

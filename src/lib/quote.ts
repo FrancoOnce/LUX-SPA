@@ -4,7 +4,7 @@ import { IGV_RATE } from '../config'
 import { getPackageById } from '../data/packages'
 import { getServiceById } from '../data/services'
 
-export const PHONE_REGEX = /^(\+?\d{1,3}[\s-]?)?(\d{9,15})$/
+export const PE_PHONE_REGEX = /^\d{9}$/
 
 const isFutureDate = (value: string) => new Date(value) >= new Date(new Date().toDateString())
 
@@ -15,10 +15,7 @@ export const contactSchema = z.object({
     .min(3, 'Ingresa tu nombre completo')
     .max(80, 'El nombre es demasiado largo')
     .regex(/^[a-zA-ZáéíóúñüÁÉÍÓÚÑÜ\s.]+$/, 'El nombre solo puede contener letras'),
-  whatsapp: z
-    .string()
-    .trim()
-    .regex(PHONE_REGEX, 'Formato de WhatsApp inválido, ej. +51 999 999 999'),
+  whatsapp: z.string().trim().regex(PE_PHONE_REGEX, 'Ingresa tu número a 9 dígitos'),
   email: z.string().trim().email('Correo electrónico inválido'),
 })
 

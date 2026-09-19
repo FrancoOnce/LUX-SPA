@@ -33,15 +33,16 @@ export function StepContact({ form }: StepProps) {
         label="WhatsApp"
         htmlFor="whatsapp"
         error={errors.whatsapp?.message}
-        hint="Con código de país. Ej. +51 999 999 999"
+        hint="Solo 9 dígitos, sin +51. Ej. 999 999 999"
       >
         <div className="relative">
           <MessageCircle className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-beige-300" />
           <Input
             id="whatsapp"
             type="tel"
-            inputMode="tel"
-            placeholder="+51 999 999 999"
+            inputMode="numeric"
+            maxLength={9}
+            placeholder="999 999 999"
             autoComplete="tel"
             className="pl-10"
             hasError={Boolean(errors.whatsapp)}

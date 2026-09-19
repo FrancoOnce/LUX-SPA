@@ -35,7 +35,7 @@ export function StepServices({ form }: StepProps) {
   return (
     <div className="space-y-7">
       <div>
-        <h3 className="font-display text-base font-bold text-white">1. Elige tu paquete base</h3>
+        <h3 className="font-display text-base font-bold text-cream-100">1. Elige tu paquete base</h3>
         <p className="mt-1 text-sm text-beige-300">Puedes cambiarlo cuando quieras.</p>
         {errors.packageId && (
           <p role="alert" className="mt-2 text-xs font-medium text-red-400">
@@ -55,24 +55,24 @@ export function StepServices({ form }: StepProps) {
                 className={`rounded-2xl border p-4 text-left transition-all ${
                   selected
                     ? 'border-purple-400/60 bg-purple-400/10 shadow-glow'
-                    : 'border-white/10 bg-white/[0.03] hover:border-white/25'
+                    : 'border-beige-300/35 bg-white/70 hover:border-beige-300/55'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-2 font-display font-bold text-white">
-                    <Crown className={`h-4 w-4 ${selected ? 'text-purple-300' : 'text-beige-300'}`} />
+                  <span className="flex items-center gap-2 font-display font-bold text-cream-100">
+                    <Crown className={`h-4 w-4 ${selected ? 'text-purple-600' : 'text-beige-300'}`} />
                     {pkg.name}
                   </span>
                   <span
                     className={`flex h-5 w-5 items-center justify-center rounded-full border ${
-                      selected ? 'border-purple-400 bg-purple-400 text-night-950' : 'border-white/20'
+                      selected ? 'border-purple-400 bg-purple-400 text-cream-100' : 'border-beige-300/50'
                     }`}
                   >
                     {selected && <Check className="h-3 w-3" strokeWidth={3} />}
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-beige-300">{pkg.tagline}</p>
-                <p className="mt-2 text-sm font-bold text-purple-300">S/ {formatPrice(pkg.price)}</p>
+                <p className="mt-2 text-sm font-bold text-purple-600">S/ {formatPrice(pkg.price)}</p>
               </button>
             )
           })}
@@ -80,7 +80,7 @@ export function StepServices({ form }: StepProps) {
       </div>
 
       <div>
-        <h3 className="font-display text-base font-bold text-white">2. Suma servicios adicionales</h3>
+        <h3 className="font-display text-base font-bold text-cream-100">2. Suma servicios adicionales</h3>
         <p className="mt-1 text-sm text-beige-300">
           {addons.length > 0 ? `${addons.length} servicio(s) seleccionado(s)` : 'Opcional, personaliza tu experiencia.'}
         </p>
@@ -98,18 +98,18 @@ export function StepServices({ form }: StepProps) {
                 className={`flex items-center gap-3 rounded-xl border px-3.5 py-3 text-left transition-all ${
                   selected
                     ? 'border-purple-400/60 bg-purple-400/10'
-                    : 'border-white/10 bg-white/[0.03] hover:border-white/25'
+                    : 'border-beige-300/35 bg-white/70 hover:border-beige-300/55'
                 }`}
               >
                 <span
                   className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-                    selected ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white' : 'bg-white/10 text-beige-200'
+                    selected ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white' : 'bg-beige-300/30 text-beige-200'
                   }`}
                 >
                   {selected ? <Check className="h-4 w-4" strokeWidth={3} /> : <Icon className="h-4 w-4" />}
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-semibold text-white">{service.name}</span>
+                  <span className="block truncate text-sm font-semibold text-cream-100">{service.name}</span>
                   <span className="block text-xs text-beige-300">S/ {formatPrice(service.price)}</span>
                 </span>
                 {!selected && <Plus className="h-4 w-4 shrink-0 text-beige-300" />}

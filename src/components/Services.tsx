@@ -34,10 +34,10 @@ export function Services() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div data-reveal className="flex max-w-2xl flex-col items-center gap-4 text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-purple-400/30 bg-purple-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-purple-200">
+          <span className="inline-flex items-center gap-2 rounded-full border border-purple-400/30 bg-purple-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-purple-600">
             Catálogo de servicios
           </span>
-          <h2 className="font-display text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
+          <h2 className="font-display text-3xl font-bold leading-tight text-cream-100 sm:text-4xl lg:text-5xl">
             Elige la experiencia que hará{' '}
             <span className="bg-gradient-to-r from-cream-100 via-beige-200 to-purple-400 bg-clip-text text-transparent">
               que todos hablen de tu evento
@@ -60,7 +60,7 @@ export function Services() {
                 className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
                   isActive
                     ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-glow-warm'
-                    : 'bg-transparent text-beige-300 hover:text-white'
+                    : 'bg-transparent text-beige-300 hover:text-cream-100'
                 }`}
                 aria-pressed={isActive}
               >
@@ -77,13 +77,22 @@ export function Services() {
             return (
               <article
                 key={service.id}
-                className={`group flex animate-fade-up flex-col overflow-hidden rounded-2xl border bg-white/[0.04] backdrop-blur transition-colors ${
-                  isSelected ? 'border-purple-400/60 shadow-glow' : 'border-white/10 hover:border-white/20 hover:bg-white/[0.06]'
+                className={`group flex animate-fade-up flex-col overflow-hidden rounded-2xl border bg-white/80 backdrop-blur transition-colors ${
+                  isSelected ? 'border-purple-400/60 shadow-glow' : 'border-beige-300/35 hover:border-beige-300/50 hover:bg-white/90'
                 }`}
               >
                 <div className={`relative flex h-40 items-center justify-center overflow-hidden bg-gradient-to-br ${service.accent}`}>
                   <div className="absolute inset-0 bg-black/25" />
-                  <Icon className="relative h-14 w-14 text-white drop-shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6" />
+                  {service.image ? (
+                    <img
+                      src={service.image}
+                      alt={service.name}
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  ) : (
+                    <Icon className="relative h-14 w-14 text-cream-100 drop-shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6" />
+                  )}
                   {isSelected && (
                     <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-night-950/90 px-2.5 py-1 text-xs font-bold text-cream-100">
                       <Check className="h-3.5 w-3.5" /> En cotización
@@ -92,15 +101,15 @@ export function Services() {
                 </div>
 
                 <div className="flex flex-1 flex-col gap-3 p-5">
-                  <span className="text-xs font-semibold uppercase tracking-widest text-purple-300">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-purple-600">
                     {SERVICE_CATEGORIES.find((category) => category.value === service.category)?.label}
                   </span>
-                  <h3 className="font-display text-lg font-bold text-white">{service.name}</h3>
+                  <h3 className="font-display text-lg font-bold text-cream-100">{service.name}</h3>
                   <p className="line-clamp-3 text-sm leading-relaxed text-beige-300">{service.description}</p>
 
                   <div className="flex flex-wrap gap-1.5">
                     {service.features.slice(0, 3).map((feature) => (
-                      <span key={feature} className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[11px] font-medium text-beige-200">
+                      <span key={feature} className="rounded-md border border-beige-300/35 bg-white/80 px-2 py-1 text-[11px] font-medium text-beige-200">
                         {feature}
                       </span>
                     ))}
@@ -109,7 +118,7 @@ export function Services() {
                   <div className="mt-auto flex items-center justify-between pt-3">
                     <div>
                       <p className="text-[11px] uppercase tracking-wider text-beige-300">
-                        Desde <span className="font-display text-base font-bold text-purple-300">S/ {service.price}</span>
+                        Desde <span className="font-display text-base font-bold text-purple-600">S/ {service.price}</span>
                       </p>
                       <p className="flex items-center gap-1 text-[11px] text-beige-300">
                         <Clock className="h-3 w-3" /> {service.minDuration}
@@ -121,7 +130,7 @@ export function Services() {
                     <button
                       type="button"
                       onClick={() => setSelectedService(service)}
-                      className="press inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:border-purple-400/50 hover:text-purple-300"
+                      className="press inline-flex items-center justify-center gap-1.5 rounded-xl border border-beige-300/35 bg-white/80 px-3 py-2.5 text-sm font-semibold text-cream-100 transition-colors hover:border-purple-400/50 hover:text-purple-600"
                     >
                       <Eye className="h-4 w-4" /> Detalles
                     </button>
@@ -132,7 +141,7 @@ export function Services() {
                       className={`press inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
                         isSelected
                           ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-glow-warm'
-                          : 'border border-white/10 bg-white/5 text-white hover:border-purple-400/50 hover:bg-purple-400/10'
+                          : 'border border-beige-300/35 bg-white/80 text-cream-100 hover:border-purple-400/50 hover:bg-purple-400/10'
                       }`}
                     >
                       {isSelected ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
@@ -148,7 +157,7 @@ export function Services() {
         <div data-reveal className="mt-12 text-center">
           <a
             href="#paquetes"
-            className="group inline-flex items-center gap-2 text-sm font-semibold text-purple-300 transition-colors hover:text-purple-200"
+            className="group inline-flex items-center gap-2 text-sm font-semibold text-purple-600 transition-colors hover:text-purple-600"
           >
             Explorar paquetes todo incluido
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

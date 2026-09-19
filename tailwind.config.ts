@@ -7,21 +7,21 @@ export default {
     extend: {
       colors: {
         night: {
-          950: '#140b22',
-          900: '#1b0f2e',
-          800: '#251640',
-          700: '#301e52',
+          950: '#fcf8f1',
+          900: '#f6efe2',
+          800: '#efe3d0',
+          700: '#e6d5bc',
         },
         cream: {
-          50: '#fffdf7',
-          100: '#faf3e3',
-          200: '#f3e8cd',
+          50: '#3a2c1f',
+          100: '#1e1712',
+          200: '#53402e',
         },
         beige: {
-          100: '#efe6d2',
-          200: '#e3d6b9',
-          300: '#d2c09a',
-          400: '#bda77c',
+          100: '#4a3a2c',
+          200: '#5f4c3b',
+          300: '#75604b',
+          400: '#98806a',
         },
       },
       fontFamily: {
@@ -40,6 +40,8 @@ export default {
         'sheet-out': 'sheetOut 0.18s ease-in both',
         'slide-step': 'slideStep 0.3s cubic-bezier(0.22, 1, 0.36, 1) both',
         'slide-step-left': 'slideStepLeft 0.3s cubic-bezier(0.22, 1, 0.36, 1) both',
+        'testi-out-left': 'testiOutLeft 0.35s ease-in both',
+        'testi-out-right': 'testiOutRight 0.35s ease-in both',
       },
       keyframes: {
         marquee: {
@@ -80,9 +82,17 @@ export default {
           from: { opacity: '0', transform: 'translateX(32px)' },
           to: { opacity: '1', transform: 'none' },
         },
-        slideStepLeft: {
-          from: { opacity: '0', transform: 'translateX(-32px)' },
-          to: { opacity: '1', transform: 'none' },
+slideStepLeft: {
+          from: { opacity: 0, transform: 'translateX(-32px)' },
+          to: { opacity: 1, transform: 'none' },
+        },
+        testiOutLeft: {
+          from: { opacity: '1', transform: 'translateX(0)' },
+          to: { opacity: '0', transform: 'translateX(-56px) scale(0.98)' },
+        },
+        testiOutRight: {
+          from: { opacity: '1', transform: 'translateX(0)' },
+          to: { opacity: '0', transform: 'translateX(56px) scale(0.98)' },
         },
       },
       boxShadow: {

@@ -22,15 +22,15 @@ const { items } = { items: testimonials }
     <div class="mx-auto mt-12 max-w-3xl">
       <div
         data-reveal
-        class="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur sm:p-10"
+        class="relative overflow-hidden rounded-3xl border border-beige-300/35 bg-white/80 p-8 backdrop-blur sm:p-10"
       >
-        <Icon name="quote" class="absolute right-6 top-6 h-16 w-16 text-white/5" />
+        <Icon name="quote" class="absolute right-6 top-6 h-16 w-16 text-beige-400/30" />
         <div id="testimonial-stage" class="relative">
           {
             items.map((item, index) => (
               <blockquote
                 data-slide={item.id}
-                class={`transition-all duration-500 ${
+                class={`${
                   index === 0 ? 'block' : 'pointer-events-none absolute inset-0 p-8 opacity-0 sm:p-10'
                 }`}
               >
@@ -45,13 +45,13 @@ const { items } = { items: testimonials }
                   }
                 </div>
                 <p class="mt-5 text-lg leading-relaxed text-beige-100 sm:text-xl">“{item.review}”</p>
-                <footer class="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5">
+                <footer class="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-beige-300/35 pt-5">
                   <div>
-                    <p class="font-display font-bold text-white">{item.name}</p>
+                    <p class="font-display font-bold text-cream-100">{item.name}</p>
                     <p class="text-sm text-beige-300">{item.role}</p>
                   </div>
                   <div class="text-right">
-                    <p class="text-sm font-semibold text-purple-300">{item.eventType}</p>
+                    <p class="text-sm font-semibold text-purple-600">{item.eventType}</p>
                     <p class="text-xs text-beige-300">{item.date}</p>
                   </div>
                 </footer>
@@ -67,7 +67,7 @@ const { items } = { items: testimonials }
                 <button
                   type="button"
                   data-dot={index}
-                  class={`h-2 rounded-full transition-all ${index === 0 ? 'w-6 bg-purple-400' : 'w-2 bg-white/20 hover:bg-white/40'}`}
+                  class={`h-2 rounded-full transition-all ${index === 0 ? 'w-6 bg-purple-400' : 'w-2 bg-beige-300/40 hover:bg-beige-300/50'}`}
                   role="tab"
                   aria-selected={index === 0}
                   aria-label={`Testimonio de ${item.name}`}
@@ -81,7 +81,7 @@ const { items } = { items: testimonials }
               id="testimonial-prev"
               type="button"
               aria-label="Testimonio anterior"
-              class="press flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors hover:border-purple-400/50 hover:text-purple-300"
+              class="press flex h-10 w-10 items-center justify-center rounded-full border border-beige-300/35 bg-white/80 text-cream-100 transition-colors hover:border-purple-400/50 hover:text-purple-600"
             >
               <Icon name="chevron-left" class="h-5 w-5" />
             </button>
@@ -89,7 +89,7 @@ const { items } = { items: testimonials }
               id="testimonial-next"
               type="button"
               aria-label="Siguiente testimonio"
-              class="press flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors hover:border-purple-400/50 hover:text-purple-300"
+              class="press flex h-10 w-10 items-center justify-center rounded-full border border-beige-300/35 bg-white/80 text-cream-100 transition-colors hover:border-purple-400/50 hover:text-purple-600"
             >
               <Icon name="chevron-right" class="h-5 w-5" />
             </button>
@@ -103,7 +103,7 @@ const { items } = { items: testimonials }
             <button
               data-preview={item.id}
               type="button"
-              class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-left transition-colors hover:border-purple-400/30"
+              class="rounded-2xl border border-beige-300/35 bg-white/70 p-4 text-left transition-colors hover:border-purple-400/30"
             >
               <div class="flex gap-0.5" role="img" aria-label={`${item.rating} de 5 estrellas`}>
                 {
@@ -134,32 +134,52 @@ const { items } = { items: testimonials }
   const prev = document.querySelector<HTMLButtonElement>('#testimonial-prev')!
   const next = document.querySelector<HTMLButtonElement>('#testimonial-next')!
 
-  let active = 0
+let active = 0
+  const EXIT_MS = 340
+  let busy = false
 
-  function show(index: number) {
+  function toggleInactive(slide: HTMLElement, isInactive: boolean) {
+    slide.classList.toggle('absolute', isInactive)
+    slide.classList.toggle('inset-0', isInactive)
+    slide.classList.toggle('p-8', isInactive)
+    slide.classList.toggle('sm:p-10', isInactive)
+    slide.classList.toggle('pointer-events-none', isInactive)
+    slide.classList.toggle('opacity-0', isInactive)
+    slide.classList.remove('animate-testi-out-left', 'animate-testi-out-right', 'animate-slide-step', 'animate-slide-step-left')
+  }
+
+  function show(index: number, dir = 1) {
     active = (index + slides.length) % slides.length
     slides.forEach((slide, i) => {
-      const show = i === active
-      slide.classList.toggle('block', show)
-      slide.classList.toggle('absolute', !show)
-      slide.classList.toggle('inset-0', !show)
-      slide.classList.toggle('p-8', !show)
-      slide.classList.toggle('sm:p-10', !show)
-      slide.classList.toggle('pointer-events-none', !show)
-      slide.classList.toggle('opacity-0', !show)
+      slide.classList.toggle('block', i === active)
+      toggleInactive(slide, i !== active)
     })
+    const entering = slides[active]
+    entering.classList.remove('animate-slide-step', 'animate-slide-step-left')
+    void entering.offsetWidth
+    entering.classList.add(dir < 0 ? 'animate-slide-step-left' : 'animate-slide-step')
     dots.forEach((dot, i) => {
       const isActive = i === active
       dot.classList.toggle('w-6', isActive)
       dot.classList.toggle('bg-purple-400', isActive)
       dot.classList.toggle('w-2', !isActive)
-      dot.classList.toggle('bg-white/20', !isActive)
+      dot.classList.toggle('bg-beige-300/40', !isActive)
       dot.setAttribute('aria-selected', String(isActive))
     })
   }
 
-  prev.addEventListener('click', () => show(active - 1))
-  next.addEventListener('click', () => show(active + 1))
+  function go(step: number) {
+    if (busy || step === 0) return
+    busy = true
+    slides[active].classList.add(step < 0 ? 'animate-testi-out-right' : 'animate-testi-out-left')
+    window.setTimeout(() => {
+      show(active + step, step)
+      busy = false
+    }, EXIT_MS)
+  }
+
+  prev.addEventListener('click', () => go(-1))
+  next.addEventListener('click', () => go(1))
   dots.forEach((dot) => dot.addEventListener('click', () => show(Number(dot.dataset.dot))))
   previews.forEach((preview) =>
     preview.addEventListener('click', () => {

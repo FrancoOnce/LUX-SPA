@@ -11,6 +11,7 @@ export interface Service {
   minDuration: string
   icon: string
   accent: string
+  image?: string
   popular?: boolean
 }
 
