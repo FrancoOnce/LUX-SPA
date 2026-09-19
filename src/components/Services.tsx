@@ -29,7 +29,7 @@ export function Services() {
   return (
     <section id="servicios" className="relative scroll-mt-24 py-20 sm:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-1/2 top-0 h-[22rem] w-[40rem] -translate-x-1/2 rounded-full bg-purple-700/15 blur-[110px]" />
+        <div className="absolute left-1/2 top-0 h-[22rem] w-[40rem] -translate-x-1/2 rounded-full bg-purple-700/10 blur-[110px]" />
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -77,8 +77,8 @@ export function Services() {
             return (
               <article
                 key={service.id}
-                className={`group flex animate-fade-up flex-col overflow-hidden rounded-2xl border bg-night-900/60 backdrop-blur transition-colors ${
-                  isSelected ? 'border-purple-400/60 shadow-glow' : 'border-white/10 hover:border-white/20'
+                className={`group flex animate-fade-up flex-col overflow-hidden rounded-2xl border bg-white/[0.04] backdrop-blur transition-colors ${
+                  isSelected ? 'border-purple-400/60 shadow-glow' : 'border-white/10 hover:border-white/20 hover:bg-white/[0.06]'
                 }`}
               >
                 <div className={`relative flex h-40 items-center justify-center overflow-hidden bg-gradient-to-br ${service.accent}`}>
@@ -121,7 +121,7 @@ export function Services() {
                     <button
                       type="button"
                       onClick={() => setSelectedService(service)}
-                      className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:border-purple-400/50 hover:text-purple-300"
+                      className="press inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:border-purple-400/50 hover:text-purple-300"
                     >
                       <Eye className="h-4 w-4" /> Detalles
                     </button>
@@ -129,7 +129,7 @@ export function Services() {
                       type="button"
                       onClick={() => toggleAddon(service.id)}
                       aria-pressed={isSelected}
-                      className={`inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
+                      className={`press inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
                         isSelected
                           ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-glow-warm'
                           : 'border border-white/10 bg-white/5 text-white hover:border-purple-400/50 hover:bg-purple-400/10'

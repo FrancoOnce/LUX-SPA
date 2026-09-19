@@ -14,7 +14,7 @@ coreografías y efectos especiales).
 | Sin JS | Navbar, Hero, Paquetes, Nosotros, Testimonios, Footer (vanilla + CSS) |
 | Formularios | React Hook Form + Zod (solo se carga al abrir el cotizador) |
 | Iconos | SVG inline (estático) + Lucide (islas) |
-| Animaciones | CSS puro · Framework Motion descartado a favor de keyframes |
+| Animaciones | CSS puro estilo Apple: curvas con overshoot (sheets), feedback instantáneo al presionar, dirección en los pasos del wizard |
 | Estado global | `window.__spaBasket` + CustomEvents (compartido entre islas y vanilla) |
 
 ## Inicio rápido
@@ -31,7 +31,7 @@ npm run verify    # smoke test con Chrome headless (requiere npm run preview)
 ## Estructura de carpetas
 
 ```
-SPA-EVENTOS/
+LUX-Eventos/
 ├── astro.config.mjs
 ├── postcss.config.js
 ├── tailwind.config.ts       # paleta: night (fondo morado), cream, beige + gradientes

@@ -8,10 +8,14 @@ import Icon from './Icon.astro'
   <div class="pointer-events-none absolute inset-0 -z-10">
     <div class="absolute inset-0 bg-night-950" />
     <div
-      class="absolute -top-40 left-1/2 h-[32rem] w-[52rem] -translate-x-1/2 rounded-full bg-[conic-gradient(from_140deg,rgba(139,92,246,0.30),rgba(249,115,22,0.20),rgba(220,38,38,0.16),rgba(139,92,246,0.30))] blur-3xl animate-aurora"
+      class="absolute -top-40 left-1/2 h-[34rem] w-[56rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.18),transparent_62%)] blur-3xl"
     />
-    <div class="absolute bottom-0 left-0 h-[24rem] w-[24rem] rounded-full bg-orange-600/15 blur-[100px]" />
-    <div class="absolute right-0 top-1/3 h-[20rem] w-[20rem] rounded-full bg-purple-500/20 blur-[90px]" />
+    <div
+      class="absolute bottom-0 left-0 h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(249,115,22,0.12),transparent_65%)] blur-[100px]"
+    />
+    <div
+      class="absolute right-0 top-1/3 h-[20rem] w-[20rem] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(217,70,239,0.10),transparent_65%)] blur-[90px]"
+    />
     <div
       class="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_70%)]"
     />
@@ -29,7 +33,7 @@ import Icon from './Icon.astro'
 
       <h1
         data-reveal
-        class="mt-6 font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl"
+        class="mt-6 font-display text-4xl font-extrabold leading-[1.05] tracking-[-0.02em] text-white sm:text-6xl sm:tracking-[-0.025em] lg:text-7xl lg:tracking-[-0.03em]"
       >
         Haz que tu evento{' '}
         <span class="bg-gradient-to-r from-orange-300 via-red-300 to-purple-400 bg-clip-text text-transparent">
@@ -46,20 +50,15 @@ import Icon from './Icon.astro'
         <button
           type="button"
           data-open-quote
-          class="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 px-7 py-4 text-base font-bold text-white shadow-glow-warm transition-all hover:scale-[1.03]"
+          class="press group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 px-7 py-4 text-base font-bold text-white shadow-glow-warm transition-all hover:scale-[1.03]"
         >
           Cotizar Ahora
           <Icon name="arrow-right" class="h-5 w-5 transition-transform group-hover:translate-x-1" />
         </button>
         <a
           href="#servicios"
-          class="group inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-7 py-4 text-base font-semibold text-white backdrop-blur transition-all hover:border-purple-400/50 hover:bg-white/10"
+          class="press group inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-7 py-4 text-base font-semibold text-white/90 backdrop-blur transition-colors hover:border-purple-400/40 hover:text-white"
         >
-          <span
-            class="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 transition-colors group-hover:border-orange-400 group-hover:text-orange-200"
-          >
-            <Icon name="play" class="h-3.5 w-3.5 fill-current" />
-          </span>
           Ver Shows
         </a>
       </div>
@@ -97,7 +96,7 @@ import Icon from './Icon.astro'
         class="relative mx-auto aspect-[4/5] max-w-md overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-night-800 via-night-900 to-night-950 shadow-2xl"
       >
         <div
-          class="absolute inset-0 bg-[conic-gradient(from_180deg,rgba(139,92,246,0.20),rgba(249,115,22,0.14),rgba(220,38,38,0.12),rgba(139,92,246,0.20))] animate-aurora"
+          class="absolute inset-0 bg-[conic-gradient(from_180deg,rgba(139,92,246,0.20),rgba(249,115,22,0.14),rgba(220,38,38,0.12),rgba(139,92,246,0.20))]"
         >
         </div>
         <div class="absolute inset-0 flex flex-col items-center justify-center gap-4">
@@ -117,7 +116,7 @@ import Icon from './Icon.astro'
       </div>
 
       <div
-        class="absolute -left-8 top-10 flex animate-float items-center gap-3 rounded-2xl border border-white/10 bg-night-900/90 px-4 py-3 backdrop-blur"
+        class="glass absolute -left-8 top-10 flex items-center gap-3 rounded-2xl px-4 py-3 shadow-xl"
       >
         <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-500/20 text-purple-300">
           <Icon name="shield-check" class="h-5 w-5" />
@@ -129,7 +128,7 @@ import Icon from './Icon.astro'
       </div>
 
       <div
-        class="absolute -right-6 bottom-12 flex animate-float-delayed items-center gap-3 rounded-2xl border border-white/10 bg-night-900/90 px-4 py-3 backdrop-blur"
+        class="glass absolute -right-6 bottom-12 flex items-center gap-3 rounded-2xl px-4 py-3 shadow-xl"
       >
         <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-red-500/20 text-red-300">
           <Icon name="users" class="h-5 w-5" />

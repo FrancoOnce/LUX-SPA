@@ -11,13 +11,22 @@ interface ServiceModalProps {
 
 export function ServiceModal({ service, onClose }: ServiceModalProps) {
   const [basket, setBasketState] = useState<Basket>(() => getBasket())
+  const [leaving, setLeaving] = useState(false)
   useEffect(() => subscribe(setBasketState), [])
   const isSelected = basket.addons.includes(service.id)
   const Icon = getIcon(service.icon)
 
+  const beginClose = () => setLeaving(true)
+
+  useEffect(() => {
+    if (!leaving) return
+    const timer = window.setTimeout(onClose, 260)
+    return () => window.clearTimeout(timer)
+  }, [leaving, onClose])
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
+      if (event.key === 'Escape') beginClose()
     }
     document.addEventListener('keydown', onKeyDown)
     document.body.style.overflow = 'hidden'
@@ -25,7 +34,7 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
       document.removeEventListener('keydown', onKeyDown)
       document.body.style.overflow = ''
     }
-  }, [onClose])
+  }, [])
 
   const toggleAddon = () => {
     const addons = basket.addons
@@ -40,21 +49,23 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
     <div role="dialog" aria-modal="true" aria-label={`Detalles de ${service.name}`} className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center">
       <button
         type="button"
-        onClick={onClose}
-        className="absolute inset-0 animate-fade-in bg-black/70 backdrop-blur-sm"
+        onClick={beginClose}
+        className={`absolute inset-0 bg-black/70 backdrop-blur-sm ${leaving ? 'animate-fade-out' : 'animate-fade-in'}`}
         aria-label="Cerrar"
       />
 
       <div
         role="presentation"
-        className="relative z-10 w-full max-w-lg animate-zoom-in overflow-hidden rounded-t-3xl border border-white/10 bg-night-900 shadow-2xl sm:rounded-3xl"
+        className={`relative z-10 w-full max-w-lg overflow-hidden rounded-t-3xl border border-white/10 bg-night-900/95 shadow-2xl backdrop-blur-2xl sm:rounded-3xl ${
+          leaving ? 'animate-zoom-out' : 'animate-zoom-in'
+        }`}
       >
         <div className={`relative flex h-44 items-center justify-center bg-gradient-to-br ${service.accent}`}>
           <div className="absolute inset-0 bg-black/25" />
           <Icon className="relative h-16 w-16 text-white drop-shadow-lg" />
           <button
             type="button"
-            onClick={onClose}
+            onClick={beginClose}
             className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white transition-colors hover:bg-black/60"
             aria-label="Cerrar detalles"
           >
@@ -92,7 +103,7 @@ export function ServiceModal({ service, onClose }: ServiceModalProps) {
             type="button"
             onClick={toggleAddon}
             aria-pressed={isSelected}
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 px-4 py-3.5 text-base font-bold text-white transition-all hover:shadow-glow-warm"
+            className="press mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 px-4 py-3.5 text-base font-bold text-white transition-all hover:shadow-glow-warm"
           >
             {isSelected ? (
               <>

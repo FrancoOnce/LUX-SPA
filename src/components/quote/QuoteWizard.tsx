@@ -41,6 +41,7 @@ function buildDefaultValues(): QuoteFormData {
 
 export function QuoteWizard() {
   const [isOpen, setIsOpen] = useState(false)
+  const [leaving, setLeaving] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [waUrl, setWaUrl] = useState('')
   const [apiStatus, setApiStatus] = useState<ApiStatus>('idle')
@@ -54,13 +55,23 @@ export function QuoteWizard() {
 
   const stepper = useMultiStepForm(STEPS)
 
-  const closeQuote = useCallback(() => setIsOpen(false), [])
+  const closeQuote = useCallback(() => setLeaving(true), [])
+
+  useEffect(() => {
+    if (!leaving) return
+    const timer = window.setTimeout(() => {
+      setLeaving(false)
+      setIsOpen(false)
+    }, 260)
+    return () => window.clearTimeout(timer)
+  }, [leaving])
 
   useEffect(() => {
     const onOpen = () => {
       form.reset(buildDefaultValues())
       setSubmitted(false)
       setApiStatus('idle')
+      setLeaving(false)
       setIsOpen(true)
     }
     window.addEventListener('spa:open-quote', onOpen)
@@ -121,14 +132,16 @@ export function QuoteWizard() {
       <button
         type="button"
         onClick={closeQuote}
-        className="absolute inset-0 animate-fade-in bg-black/75 backdrop-blur-sm"
+        className={`absolute inset-0 bg-black/75 backdrop-blur-sm ${leaving ? 'animate-fade-out' : 'animate-fade-in'}`}
         aria-label="Cerrar cotizador"
       />
 
       <div
         ref={panelRef}
         tabIndex={-1}
-        className="relative z-10 flex max-h-[94vh] w-full max-w-2xl animate-zoom-in flex-col overflow-hidden rounded-t-3xl border border-white/10 bg-night-900 shadow-2xl outline-none sm:max-h-[90vh] sm:rounded-3xl"
+        className={`relative z-10 flex max-h-[94vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl border border-white/10 bg-night-900/95 shadow-2xl outline-none backdrop-blur-2xl sm:max-h-[90vh] sm:rounded-3xl ${
+          leaving ? 'animate-sheet-out' : 'animate-sheet-in'
+        }`}
       >
         {submitted ? (
           <div className="flex flex-col items-center px-6 py-12 text-center">
@@ -230,7 +243,7 @@ export function QuoteWizard() {
             </div>
 
             <div className="flex-1 overflow-y-auto px-6 py-6">
-              <div key={stepper.current.id} className="animate-slide-step">
+              <div key={stepper.current.id} className={stepper.direction > 0 ? 'animate-slide-step' : 'animate-slide-step-left'}>
                 {renderStep()}
               </div>
             </div>
@@ -240,7 +253,7 @@ export function QuoteWizard() {
                 <button
                   type="button"
                   onClick={stepper.back}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-white/25"
+                  className="press inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-white/25"
                 >
                   <ArrowLeft className="h-4 w-4" /> Atrás
                 </button>
@@ -254,7 +267,7 @@ export function QuoteWizard() {
                 <button
                   type="submit"
                   disabled={form.formState.isSubmitting}
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-sm font-bold text-night-950 transition-transform hover:scale-[1.02] disabled:opacity-60"
+                  className="press inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-sm font-bold text-night-950 transition-transform hover:scale-[1.02] disabled:opacity-60"
                 >
                   <MessageCircle className="h-4 w-4" /> Enviar cotización
                 </button>
@@ -262,7 +275,7 @@ export function QuoteWizard() {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 px-6 py-3 text-sm font-bold text-white shadow-glow-warm transition-transform hover:scale-[1.02]"
+                  className="press group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 px-6 py-3 text-sm font-bold text-white shadow-glow-warm transition-transform hover:scale-[1.02]"
                 >
                   Continuar
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

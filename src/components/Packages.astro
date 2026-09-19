@@ -32,7 +32,7 @@ import { formatPrice } from '../lib/format'
                 class={`relative flex h-full flex-col overflow-hidden rounded-3xl border p-6 transition-all hover:-translate-y-1.5 ${
                   isRecommended
                     ? 'border-purple-400/50 bg-gradient-to-b from-purple-500/[0.12] via-night-900 to-night-900 shadow-glow'
-                    : 'border-white/10 bg-night-900/60 backdrop-blur hover:border-white/25'
+                    : 'border-white/10 bg-white/[0.04] backdrop-blur hover:border-white/25'
                 }`}
               >
                 {isRecommended && (
@@ -97,7 +97,7 @@ import { formatPrice } from '../lib/format'
                   type="button"
                   data-open-quote
                   data-quote-package={pkg.id}
-                  class={`mt-6 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-bold transition-all ${
+                  class={`press mt-6 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-bold transition-all ${
                     isRecommended
                       ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white hover:scale-[1.03] shadow-glow-warm'
                       : 'border border-white/15 bg-white/5 text-white hover:border-purple-400/50 hover:bg-purple-400/10'

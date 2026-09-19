@@ -13,6 +13,14 @@
     @apply bg-night-950 font-body text-beige-300 antialiased;
     background-image: radial-gradient(circle at 20% -10%, rgba(139, 92, 246, 0.14), transparent 45%),
       radial-gradient(circle at 90% 10%, rgba(249, 115, 22, 0.1), transparent 40%);
+    font-optical-sizing: auto;
+  }
+
+  /* Size-specific tracking: tightened on large display type, neutral on body. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 
   ::selection {
@@ -40,6 +48,31 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background: #45316e;
+  }
+}
+
+@layer components {
+  /* Instant press feedback on pointer-down, not on release. */
+  .press {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .press:active {
+    transform: scale(0.97) !important;
+  }
+
+  /* Translucent surface — content scrolls underneath. */
+  .glass {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .press:active {
+    transform: none !important;
   }
 }
 
