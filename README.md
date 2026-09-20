@@ -95,3 +95,6 @@ Paleta y gradientes en `tailwind.config.ts`.
 - `aria-label` en botones de icono, `aria-pressed` en toggles, `aria-current="step"` en el wizard.
 - Errores de formulario anunciados con `role="alert"` y `focus` gestionado por React Hook Form.
 - Soporte de `prefers-reduced-motion` y navegación por teclado con `focus-visible`.
+
+
+![description](assets/image1.png)
